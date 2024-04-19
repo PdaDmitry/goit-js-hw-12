@@ -63,31 +63,28 @@ formEl.addEventListener('submit', async e => {
   }
   // console.log(images.pageSize);
   // loader.classList.remove('is-hidden');
+  try {
+    const data = await images.getImages(q);
+    console.log(data);
+    if (data.hits.length === 0) {
+      btnLoad.classList.add('is-hidden');
+      showIziToast(
+        'Sorry, there are no images matching your search query. Please try again!'
+      );
+    } else {
+      console.log(data.hits);
+      const galleryHtml = renderListGallery(data.hits);
+      gallery.innerHTML = galleryHtml;
+      btnLoad.classList.remove('is-hidden');
 
-  images
-    .getImages(q)
-    .then(data => {
-      if (data.hits.length === 0) {
-        btnLoad.classList.add('is-hidden');
-        showIziToast(
-          'Sorry, there are no images matching your search query. Please try again!'
-        );
-      } else {
-        console.log(data.hits);
-        const galleryHtml = renderListGallery(data.hits);
-        gallery.innerHTML = galleryHtml;
-        btnLoad.classList.remove('is-hidden');
-
-        show.refresh();
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    })
-    .finally(() => {
-      loader.classList.add('is-hidden');
-      e.target.reset();
-    });
+      show.refresh();
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loader.classList.add('is-hidden');
+    e.target.reset();
+  }
 });
 
 // btnLoad.addEventListener();

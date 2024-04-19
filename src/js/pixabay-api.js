@@ -20,17 +20,29 @@ import axios from 'axios';
 
 export class ImageServer {
   #pageSize = 15;
+  // per_page;
+  // total_pages = 1;
 
-  total_pages = 1;
   constructor() {
     this.KEY = '42263617-81d7156b9f7b88cd7b1016c2a';
+    this.URL = 'https://pixabay.com';
+    this.resources = '/api';
   }
 
   async getImages(value) {
-    const url = `https://pixabay.com/api/?key=${this.KEY}&q=${value}&image_type=photo&orientation=horizontal&safesearch=true`;
+    const params = {
+      key: this.KEY,
+      q: value,
+      image_type: 'photo',
+      orientation: 'horizontal',
+      safesearch: true,
+      per_page: this.#pageSize,
+    };
+
+    const url = `${this.URL}${this.resources}`;
 
     try {
-      const response = await axios.get(url);
+      const response = await axios.get(url, { params });
       return response.data;
     } catch (error) {
       throw new Error(error.response.status);
