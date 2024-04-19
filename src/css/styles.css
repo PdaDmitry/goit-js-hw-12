@@ -44,10 +44,20 @@ button {
 
 /* ===================Standard Style Reset====================== */
 
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+
+}
+
 .form {
     display: flex;
     padding: 36px 535px 0 535px;
     margin-bottom: 32px;
+
 }
 
 .input {
@@ -64,6 +74,7 @@ button {
     color: #422e2e;
     padding: 8px 16px;
     border: 1px solid #808080;
+    margin-bottom: 32px;
 }
 
 .input:hover {
@@ -93,16 +104,24 @@ button {
     border: none;
     background: #4e75ff;
     color: #FFFFFF;
+
 }
 
 .btn-search:hover {
     background: #6c8cff;
 }
 
+.cont-load {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
 .btn-load {
     display: block;
-    margin: 0 auto;
-    /* margin-top: 32px; */
+    margin-bottom: 32px;
     width: 125px;
 }
 
@@ -119,6 +138,7 @@ button {
     margin: 0 auto;
     background: #fff;
     user-select: none;
+    /* margin-bottom: 32px; */
 }
 
 .gallery-item {
@@ -168,19 +188,20 @@ button {
     color: #2e2f42;
 }
 
-/* .loader-second{} */
-
 .loader {
     display: block;
     font-size: 20px;
     color: #1c0303;
-    display: inline-block;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 400;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     margin-bottom: 20px;
+}
+
+.second-load {
+    position: relative;
 }
 
 .is-hidden {
