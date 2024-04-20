@@ -5,11 +5,11 @@ export function createGalleryMarkup() {
     <input class="input" type="text" name="picture" placeholder="Search images..." />
     <button class="btn-search" type="submit">Search</button>
   </form>
-  <span class="loader">Loading images, please wait...</span>
+  <span class="loader is-hidden">Loading images, please wait...</span>
   <ul class="gallery"></ul>
   <div class="cont-load">
-  <button class="btn-load btn-search" type="submit">Load more</button>
-  <span class="loader second-load" data-loader>Loading images, please wait...</span>
+  <button class="btn-load btn-search is-hidden" type="button">Load more</button>
+  <span class="loader second-load is-hidden" data-loader>Loading images, please wait...</span>
   </div>
   </div>`;
 }

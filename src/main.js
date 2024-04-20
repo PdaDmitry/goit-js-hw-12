@@ -15,23 +15,16 @@ const body = document.querySelector('body');
 body.insertAdjacentHTML('afterbegin', galleryMarkup);
 
 const formEl = document.querySelector('form');
-
 const loader = document.querySelector('.loader');
-loader.classList.add('is-hidden');
-
 const loaderSecond = document.querySelector('[data-loader]');
-loaderSecond.classList.add('is-hidden');
 
 const gallery = document.querySelector('.gallery');
-
 const input = document.querySelector('input');
-
 const button = document.querySelector('button');
-
 const btnLoad = document.querySelector('.btn-load');
-btnLoad.classList.add('is-hidden');
 
 const images = new ImageServer();
+// const addImages = new ImageServer();
 const show = new SimpleLightbox('.gallery a');
 
 function showIziToast(text) {
@@ -46,32 +39,40 @@ function showIziToast(text) {
   });
 }
 
-let page = 1;
-let total_pages;
+let page;
+let maxPages;
 let q;
 
 formEl.addEventListener('submit', async e => {
   e.preventDefault();
+  btnLoad.classList.add('is-hidden');
   gallery.innerHTML = '';
 
   q = e.target.elements.picture.value.trim();
   if (!q) {
     e.target.reset();
-    btnLoad.classList.add('is-hidden');
     showIziToast('The form field must be filled in!');
     return;
   }
-  // console.log(images.pageSize);
+
   loader.classList.remove('is-hidden');
+  page = 1;
   try {
-    const data = await images.getImages(q);
-    // btnLoad.classList.add('is-hidden');
+    const data = await images.getImages(q, page);
+    maxPages = Math.ceil(data.totalHits / images.pageSize);
     console.log(data);
     if (data.hits.length === 0) {
-      btnLoad.classList.add('is-hidden');
       showIziToast(
         'Sorry, there are no images matching your search query. Please try again!'
       );
+    } else if (page >= maxPages) {
+      btnLoad.classList.add('is-hidden');
+      const galleryHtml = renderListGallery(data.hits);
+      gallery.innerHTML = galleryHtml;
+      showIziToast(
+        "We're sorry, but you've reached the end of search results."
+      );
+      show.refresh();
     } else {
       console.log(data.hits);
       const galleryHtml = renderListGallery(data.hits);
@@ -87,5 +88,39 @@ formEl.addEventListener('submit', async e => {
     e.target.reset();
   }
 });
+// ==================== button "Load more" =================================== //
+btnLoad.addEventListener('click', addPictures);
 
-// btnLoad.addEventListener();
+async function addPictures(e) {
+  e.preventDefault();
+  page += 1;
+  btnLoad.classList.add('is-hidden');
+  loaderSecond.classList.remove('is-hidden');
+
+  try {
+    const data = await images.getImages(q, page);
+    maxPages = Math.ceil(data.totalHits / images.pageSize);
+    console.log(maxPages);
+    if (page >= maxPages) {
+      btnLoad.classList.add('is-hidden');
+      const galleryAddImages = renderListGallery(data.hits);
+      gallery.insertAdjacentHTML('beforeend', galleryAddImages);
+      showIziToast(
+        "We're sorry, but you've reached the end of search results."
+      );
+      show.refresh();
+    } else {
+      const galleryAddImages = renderListGallery(data.hits);
+      gallery.insertAdjacentHTML('beforeend', galleryAddImages);
+
+      btnLoad.classList.remove('is-hidden');
+
+      show.refresh();
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loaderSecond.classList.add('is-hidden');
+    // btnLoad.classList.remove('is-hidden');
+  }
+}

@@ -20,8 +20,6 @@ import axios from 'axios';
 
 export class ImageServer {
   #pageSize = 15;
-  // per_page;
-  // total_pages = 1;
 
   constructor() {
     this.KEY = '42263617-81d7156b9f7b88cd7b1016c2a';
@@ -29,7 +27,7 @@ export class ImageServer {
     this.resources = '/api/';
   }
 
-  async getImages(value) {
+  async getImages(value, currentPage) {
     const params = {
       key: this.KEY,
       q: value,
@@ -37,6 +35,7 @@ export class ImageServer {
       orientation: 'horizontal',
       safesearch: true,
       per_page: this.#pageSize,
+      page: currentPage,
     };
 
     const url = `${this.URL}${this.resources}`;
