@@ -26,7 +26,7 @@ export class ImageServer {
   constructor() {
     this.KEY = '42263617-81d7156b9f7b88cd7b1016c2a';
     this.URL = 'https://pixabay.com';
-    this.resources = '/api';
+    this.resources = '/api/';
   }
 
   async getImages(value) {

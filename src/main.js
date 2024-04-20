@@ -62,9 +62,10 @@ formEl.addEventListener('submit', async e => {
     return;
   }
   // console.log(images.pageSize);
-  // loader.classList.remove('is-hidden');
+  loader.classList.remove('is-hidden');
   try {
     const data = await images.getImages(q);
+    // btnLoad.classList.add('is-hidden');
     console.log(data);
     if (data.hits.length === 0) {
       btnLoad.classList.add('is-hidden');
