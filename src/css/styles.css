@@ -47,7 +47,7 @@ button {
 .container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 30px;
     justify-content: center;
     align-items: center;
 
@@ -74,7 +74,7 @@ button {
     color: #422e2e;
     padding: 8px 16px;
     border: 1px solid #808080;
-    margin-bottom: 32px;
+    /* margin-bottom: 32px; */
 }
 
 .input:hover {
@@ -197,7 +197,7 @@ button {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
 }
 
 .second-load {

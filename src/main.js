@@ -4,10 +4,8 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-// import axios from 'axios';
-
 import { ImageServer } from './js/pixabay-api';
-import { createGalleryMarkup, renderListGallery } from './js/render-functions'; //renderListGallery
+import { createGalleryMarkup, renderListGallery } from './js/render-functions';
 
 const galleryMarkup = createGalleryMarkup();
 
@@ -24,7 +22,6 @@ const button = document.querySelector('button');
 const btnLoad = document.querySelector('.btn-load');
 
 const images = new ImageServer();
-// const addImages = new ImageServer();
 const show = new SimpleLightbox('.gallery a');
 
 function showIziToast(text) {
@@ -48,19 +45,18 @@ formEl.addEventListener('submit', async e => {
   btnLoad.classList.add('is-hidden');
   gallery.innerHTML = '';
 
+  page = 1;
   q = e.target.elements.picture.value.trim();
   if (!q) {
     e.target.reset();
     showIziToast('The form field must be filled in!');
     return;
   }
-
   loader.classList.remove('is-hidden');
-  page = 1;
+
   try {
     const data = await images.getImages(q, page);
     maxPages = Math.ceil(data.totalHits / images.pageSize);
-    console.log(data);
     if (data.hits.length === 0) {
       showIziToast(
         'Sorry, there are no images matching your search query. Please try again!'
@@ -72,15 +68,12 @@ formEl.addEventListener('submit', async e => {
       showIziToast(
         "We're sorry, but you've reached the end of search results."
       );
-      show.refresh();
     } else {
-      console.log(data.hits);
       const galleryHtml = renderListGallery(data.hits);
       gallery.innerHTML = galleryHtml;
       btnLoad.classList.remove('is-hidden');
-
-      show.refresh();
     }
+    show.refresh();
   } catch (error) {
     console.log(error);
   } finally {
@@ -93,14 +86,13 @@ btnLoad.addEventListener('click', addPictures);
 
 async function addPictures(e) {
   e.preventDefault();
-  page += 1;
   btnLoad.classList.add('is-hidden');
   loaderSecond.classList.remove('is-hidden');
 
+  page += 1;
   try {
     const data = await images.getImages(q, page);
     maxPages = Math.ceil(data.totalHits / images.pageSize);
-    console.log(maxPages);
     if (page >= maxPages) {
       btnLoad.classList.add('is-hidden');
       const galleryAddImages = renderListGallery(data.hits);
@@ -108,19 +100,21 @@ async function addPictures(e) {
       showIziToast(
         "We're sorry, but you've reached the end of search results."
       );
-      show.refresh();
     } else {
       const galleryAddImages = renderListGallery(data.hits);
       gallery.insertAdjacentHTML('beforeend', galleryAddImages);
 
       btnLoad.classList.remove('is-hidden');
-
-      show.refresh();
     }
+    const heidhtElem = gallery.firstElementChild.getBoundingClientRect().height;
+    window.scrollBy({
+      behavior: 'smooth',
+      top: heidhtElem * 3.25,
+    });
+    show.refresh();
   } catch (error) {
     console.log(error);
   } finally {
     loaderSecond.classList.add('is-hidden');
-    // btnLoad.classList.remove('is-hidden');
   }
 }
