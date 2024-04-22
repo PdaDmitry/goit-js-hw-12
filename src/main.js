@@ -109,7 +109,7 @@ async function addPictures(e) {
     const heidhtElem = gallery.firstElementChild.getBoundingClientRect().height;
     window.scrollBy({
       behavior: 'smooth',
-      top: heidhtElem * 3.25,
+      top: heidhtElem * 2,
     });
     show.refresh();
   } catch (error) {
